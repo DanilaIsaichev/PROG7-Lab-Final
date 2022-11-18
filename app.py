@@ -7,22 +7,37 @@ from time import sleep
 import xml.etree.ElementTree as ET
 import json
 
-app = Flask("Currencies")
-app.config["JSON_AS_ASCII"] = False
 
-counter = {}
+def create_app():
+    """Функция создания приложения"""
 
-# Считываем значения из файла
-with open("./counter.json", "r") as file:
+    app = Flask("Currencies")
+    app.config["JSON_AS_ASCII"] = False
 
-    counter = json.loads(file.read())
-    counter["last_request"] = datetime.fromisoformat(counter["last_request"])
-    counter["date"] = datetime.fromisoformat(counter["date"])
+    return app
 
-    # проверяем, не изменился ли день
-    if counter["date"].day != datetime.now().day or counter["date"].month != datetime.now().month or counter["date"].year != datetime.now().year:
-        counter["date"] = datetime.now()
-        counter["total_requests"] = 0
+
+def get_counter():
+    """Функция получения значения счётчика"""
+
+    # Считываем значения из файла
+    with open("./counter.json", "r") as file:
+
+        counter = json.loads(file.read())
+        counter["last_request"] = datetime.fromisoformat(counter["last_request"])
+        counter["date"] = datetime.fromisoformat(counter["date"])
+
+        # проверяем, не изменился ли день
+        if counter["date"].day != datetime.now().day or counter["date"].month != datetime.now().month or counter["date"].year != datetime.now().year:
+            counter["date"] = datetime.now()
+            counter["total_requests"] = 0
+    
+    return counter
+
+
+app = create_app()
+
+counter = get_counter()
 
 
 @app.route("/")
@@ -32,7 +47,7 @@ def main_route():
     html = """<h4>Авторы:</h4>
     <p>Исайчев Данила</p>
     <p>Мельников Фёдор</p>
-    <p>Суркова Елизавета</p>"
+    <p>Суркова Елизавета</p>
     <p>Шумякин Илья</p>"""
 
     return html
