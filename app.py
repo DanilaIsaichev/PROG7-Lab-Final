@@ -119,7 +119,7 @@ def get_currency_by_date(val_code: str, day_start: int, month_start: int, year_s
         with open("./counter.json", "w") as file:
             file.write(json.dumps({"last_request": str(counter["last_request"]), "total_requests": counter["total_requests"], "date": str(counter["date"])}))
 
-        result = request("GET", f"http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={day_start}/{month_start}/{year_start}&date_req2={day_end}/{month_end}/{year_end}&VAL_NM_RQ={val_code}")
+        result = request("GET", f"http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={'0' + str(day_start) if day_start < 10 else day_start}/{'0' + str(month_start) if month_start < 10 else month_start}/{year_start}&date_req2={'0' + str(day_end) if day_end < 10 else day_end}/{'0' + str(month_end) if month_end < 10 else month_end}/{year_end}&VAL_NM_RQ={val_code}")
 
         # Проверяем результат запроса
         if result.status_code == 200:
