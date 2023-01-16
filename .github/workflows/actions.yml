@@ -45,3 +45,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/flask-counter:latest
+
+      - name: Copy deploy script
+        run: rsync --archive ./deploy.sh ${{ secrets.REMOTE_DEST }}
+
+      - name: Run deploy script
+        run: ssh ${{ secrets.REMOTE_HOST }} ./app/deploy.sh
