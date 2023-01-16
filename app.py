@@ -31,7 +31,7 @@ def get_counter():
         if counter["date"].day != datetime.now().day or counter["date"].month != datetime.now().month or counter["date"].year != datetime.now().year:
             counter["date"] = datetime.now()
             counter["total_requests"] = 0
-    
+
     return counter
 
 
@@ -104,7 +104,7 @@ def get_currencies():
 @app.route("/get_currency/<string:val_code>/<int:day_start>.<int:month_start>.<int:year_start>/<int:day_end>.<int:month_end>.<int:year_end>")
 def get_currency_by_date(val_code: str, day_start: int, month_start: int, year_start: int, year_end: int, month_end: int, day_end:int):
     """Маршрут с информанией о курсах определённой валюты за промежуток времени между двумя датами"""
-    
+
     # Не больше 10000 запросов в сутки
     if counter["total_requests"] < 10000:
 
@@ -131,7 +131,7 @@ def get_currency_by_date(val_code: str, day_start: int, month_start: int, year_s
                 return "No data about this currency"
             else:
                 for record in records:
-                    records_list.append({"Date": record.get('Date'), "Value": float(record.find('Value').text.replace(",","."))/float(record.find('Nominal').text.replace(",","."))})
+                    records_list.append({"Date": record.get('Date'), "Value": float(record.find('Value').text.replace(",",".")) / float(record.find('Nominal').text.replace(",","."))})
 
                 return jsonify({"ID": val_code, "Records": records_list})
 
@@ -146,7 +146,7 @@ def get_currency_by_date(val_code: str, day_start: int, month_start: int, year_s
 
 if __name__ == "__main__":
     port = getenv("PORT")
-    if port == None:
+    if port is None:
         app.run(host="0.0.0.0", port=80)
     else:
         app.run(host="0.0.0.0", port=port)
