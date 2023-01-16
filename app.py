@@ -122,16 +122,16 @@ def get_currency_by_date(val_code: str, day_start: int, month_start: int, year_s
         # Проверка границ
         if year_start > year_end:
             return "Start year is bigger then end year"
-        
+
         elif year_start == year_end and month_start > month_end:
             return "Start month is bigger then end month"
-        
+
         elif year_start == year_end and month_start == month_end and day_start > day_end:
             return "Start day is bigger then day month"
-        
+
         elif val_code not in ['R01010', 'R01020A', 'R01035', 'R01060', 'R01090B', 'R01100', 'R01115', 'R01135', 'R01200', 'R01215', 'R01235', 'R01239', 'R01270', 'R01335', 'R01350', 'R01370', 'R01375', 'R01500', 'R01535', 'R01565', 'R01585F', 'R01589', 'R01625', 'R01670', 'R01700J', 'R01710A', 'R01717', 'R01720', 'R01760', 'R01770', 'R01775', 'R01810', 'R01815', 'R01820']:
             return "Wrong currency ID"
-        
+
         else:
 
             result = request("GET", f"http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1={'0' + str(day_start) if day_start < 10 else day_start}/{'0' + str(month_start) if month_start < 10 else month_start}/{year_start}&date_req2={'0' + str(day_end) if day_end < 10 else day_end}/{'0' + str(month_end) if month_end < 10 else month_end}/{year_end}&VAL_NM_RQ={val_code}")
